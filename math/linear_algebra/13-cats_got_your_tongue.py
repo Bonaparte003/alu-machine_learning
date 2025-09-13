@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Cats got your tongue
+"""
+Cats got your tongue
+"""
 import numpy as np
 
 
