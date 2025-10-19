@@ -9,7 +9,7 @@ class Exponential:
     def __init__(self, data=None, lambtha=1.):
         """
         Initialize Exponential distribution
-        
+
         Args:
             data: list of data to estimate the distribution
             lambtha: rate parameter (expected number of occurrences)
@@ -28,21 +28,21 @@ class Exponential:
             # For exponential distribution, λ = 1 / mean
             mean = sum(data) / len(data)
             self.lambtha = 1.0 / mean
-    
+
     def pdf(self, x):
         """
         Calculates the value of the PDF for a given time period
-        
+
         Args:
             x: time period
-            
+
         Returns:
             PDF value for x
         """
         # If x is out of range (negative), return 0
         if x < 0:
             return 0
-        
+
         # Exponential PDF formula: f(x) = λ × e^(-λx)
         # Calculate e^(-λx) using Taylor series
         exp_arg = -self.lambtha * x
@@ -54,23 +54,23 @@ class Exponential:
             if abs(term) < 1e-10:
                 break
         pdf_value = self.lambtha * exp_value
-        
+
         return pdf_value
-    
+
     def cdf(self, x):
         """
         Calculates the value of the CDF for a given time period
-        
+
         Args:
             x: time period
-            
+
         Returns:
             CDF value for x
         """
         # If x is out of range (negative), return 0
         if x < 0:
             return 0
-        
+
         # Exponential CDF formula: F(x) = 1 - e^(-λx)
         # Calculate e^(-λx) using Taylor series
         exp_arg = -self.lambtha * x
@@ -82,5 +82,5 @@ class Exponential:
             if abs(term) < 1e-10:
                 break
         cdf_value = 1 - exp_value
-        
+
         return cdf_value
