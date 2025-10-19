@@ -2,6 +2,8 @@
 
 
 """Class that represents a poisson distribution"""
+
+
 class Poisson:
     """Class that represents a poisson distribution"""
     def __init__(self, data=None, lambtha=1.):
