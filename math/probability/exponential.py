@@ -1,86 +1,47 @@
 #!/usr/bin/env python3
-
-
-"""Class that represents an exponential distribution"""
+"""
+This class represents a exponential distribution
+"""
 
 
 class Exponential:
-    """Class that represents an exponential distribution"""
+    """
+    This class represents a exponential distribution
+    """
+
     def __init__(self, data=None, lambtha=1.):
         """
-        Initialize Exponential distribution
-
-        Args:
-            data: list of data to estimate the distribution
-            lambtha: rate parameter (expected number of occurrences)
+        function initializes the exponential distribution
+        data - list of the data to be used to estimate the distribution
+        lambtha - expected number of occurences in a given time frame
         """
+
         if data is None:
-            # Use provided lambtha
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
-            self.lambtha = float(lambtha)
+            else:
+                self.lambtha = float(lambtha)
         else:
-            # Calculate lambtha from data
-            if not isinstance(data, list):
+            if type(data) is not list:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            # For exponential distribution, λ = 1 / mean
-            mean = sum(data) / len(data)
-            self.lambtha = 1.0 / mean
+            self.lambtha = float(1 / (sum(data) / len(data)))
 
     def pdf(self, x):
         """
         Calculates the value of the PDF for a given time period
-
-        Args:
-            x: time period
-
-        Returns:
-            PDF value for x
+        x = time period
         """
-        # If x is out of range (negative), return 0
         if x < 0:
             return 0
-
-        # Exponential PDF formula: f(x) = λ × e^(-λx)
-        # Calculate e^(-λx) using Taylor series
-        exp_arg = -self.lambtha * x
-        exp_value = 1.0
-        term = 1.0
-        for i in range(1, 200):
-            term *= exp_arg / i
-            exp_value += term
-            if abs(term) < 1e-15:
-                break
-        pdf_value = self.lambtha * exp_value
-
-        return pdf_value
+        return self.lambtha * 2.7182818285 ** (-self.lambtha * x)
 
     def cdf(self, x):
         """
         Calculates the value of the CDF for a given time period
-
-        Args:
-            x: time period
-
-        Returns:
-            CDF value for x
+        x = time period
         """
-        # If x is out of range (negative), return 0
         if x < 0:
             return 0
-
-        # Exponential CDF formula: F(x) = 1 - e^(-λx)
-        # Calculate e^(-λx) using Taylor series
-        exp_arg = -self.lambtha * x
-        exp_value = 1.0
-        term = 1.0
-        for i in range(1, 200):
-            term *= exp_arg / i
-            exp_value += term
-            if abs(term) < 1e-15:
-                break
-        cdf_value = 1 - exp_value
-
-        return cdf_value
+        return 1 - 2.7182818285 ** (-self.lambtha * x)

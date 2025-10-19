@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
-
-
-"""Class that represents a poisson distribution"""
+"""
+This class represents a poisson distribution
+"""
 
 
 class Poisson:
-    """Class that represents a poisson distribution"""
+    """
+    This class represents a poisson distribution
+    """
+
     def __init__(self, data=None, lambtha=1.):
+        """
+        This function initializes the poisson distribution
+        and calculates lambtha if data is given
+        data - list of the data to be used to estimate the distribution
+        lambtha - expected number of occurences in a given time frame
+        """
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
-            self.lambtha = float(lambtha)
+            else:
+                self.lambtha = float(lambtha)
         else:
-            if not isinstance(data, list):
+            if type(data) is not list:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
@@ -20,72 +30,28 @@ class Poisson:
 
     def pmf(self, k):
         """
-        Calculates the value of the PMF for a given number of "successes"
-
-        Args:
-            k: number of "successes"
-
-        Returns:
-            PMF value for k
+        Calculates the value of the PMF for a given number of “successes”
         """
-        # Convert k to integer if it's not already
-        k = int(k)
-
-        # If k is out of range (negative), return 0
+        if not isinstance(k, int):
+            k = int(k)
         if k < 0:
             return 0
-
-        # Poisson PMF formula: P(X = k) = (λ^k × e^(-λ)) / k!
-        # λ^k
-        lambda_power_k = self.lambtha ** k
-
-        # e^(-λ) - calculate using e^(-λ) = 1/e^λ for better precision
-        if self.lambtha == 0:
-            exp_neg_lambda = 1.0
-        else:
-            # Calculate e^λ using Taylor series
-            x = self.lambtha
-            exp_lambda = 1.0
-            term = 1.0
-            for i in range(1, 1000):  # Use many terms for high precision
-                term *= x / i
-                exp_lambda += term
-                if abs(term) < 1e-25:  # Very tight convergence
-                    break
-            # e^(-λ) = 1/e^λ
-            exp_neg_lambda = 1.0 / exp_lambda
-
-        # k! - calculate factorial manually
-        k_factorial = 1
+        factorial = 1
         for i in range(1, k + 1):
-            k_factorial *= i
-
-        # Calculate the PMF
-        pmf_value = (lambda_power_k * exp_neg_lambda) / k_factorial
-
-        return pmf_value
+            factorial = factorial * i
+        result = self.lambtha ** k * 2.7182818285 ** (-self.lambtha)
+        return result / factorial
 
     def cdf(self, k):
         """
-        Calculates the value of the CDF for a given number of "successes"
-
-        Args:
-            k: number of "successes"
-
-        Returns:
-            CDF value for k
+        Calculate the value of the CDF for a given number of “successes”
+        k = "successes"
         """
-        # Convert k to integer if it's not already
-        k = int(k)
-
-        # If k is out of range (negative), return 0
+        if not isinstance(k, int):
+            k = int(k)
         if k < 0:
             return 0
-
-        # CDF is the sum of PMF values from 0 to k
-        # P(X ≤ k) = Σ(i=0 to k) P(X = i)
-        cdf_value = 0
+        result = 0
         for i in range(k + 1):
-            cdf_value += self.pmf(i)
-
-        return cdf_value
+            result = result + self.pmf(i)
+        return result
