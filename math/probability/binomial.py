@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import math
-
 
 """Class that represents a binomial distribution"""
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import math
-
 
 """Class that represents a normal distribution"""
 
@@ -35,7 +33,7 @@ class Normal:
             
             # Calculate standard deviation
             variance = sum((x - self.mean) ** 2 for x in data) / len(data)
-            self.stddev = math.sqrt(variance)
+            self.stddev = variance ** 0.5
     
     def z_score(self, x):
         """
@@ -76,9 +74,18 @@ class Normal:
             PDF value for x
         """
         # Normal PDF formula: f(x) = (1/σ√(2π)) × e^(-(x-μ)²/(2σ²))
-        coefficient = 1 / (self.stddev * math.sqrt(2 * math.pi))
+        coefficient = 1 / (self.stddev * (2 * 3.141592653589793) ** 0.5)
         exponent = -((x - self.mean) ** 2) / (2 * self.stddev ** 2)
-        pdf_value = coefficient * math.exp(exponent)
+        
+        # Calculate e^exponent using Taylor series
+        exp_value = 1.0
+        term = 1.0
+        for i in range(1, 100):
+            term *= exponent / i
+            exp_value += term
+            if abs(term) < 1e-10:
+                break
+        pdf_value = coefficient * exp_value
         
         return pdf_value
     
@@ -104,7 +111,18 @@ class Normal:
         
         # Abramowitz and Stegun approximation for Φ(z)
         t = 1 / (1 + 0.2316419 * abs(z))
-        d = 0.3989423 * math.exp(-z * z / 2)
+        
+        # Calculate e^(-z²/2) using Taylor series
+        exp_arg = -z * z / 2
+        exp_value = 1.0
+        term = 1.0
+        for i in range(1, 100):
+            term *= exp_arg / i
+            exp_value += term
+            if abs(term) < 1e-10:
+                break
+        
+        d = 0.3989423 * exp_value
         prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.7814779 + t * (-1.8212560 + t * 1.3302744))))
         
         if z > 0:

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import math
-
 
 """Class that represents a poisson distribution"""
 
@@ -41,11 +39,20 @@ class Poisson:
         # λ^k
         lambda_power_k = self.lambtha ** k
         
-        # e^(-λ)
-        exp_neg_lambda = math.exp(-self.lambtha)
+        # e^(-λ) - calculate using Taylor series approximation
+        x = -self.lambtha
+        exp_neg_lambda = 1.0
+        term = 1.0
+        for i in range(1, 100):  # Use enough terms for accuracy
+            term *= x / i
+            exp_neg_lambda += term
+            if abs(term) < 1e-10:  # Stop when terms become very small
+                break
         
-        # k!
-        k_factorial = math.factorial(k)
+        # k! - calculate factorial manually
+        k_factorial = 1
+        for i in range(1, k + 1):
+            k_factorial *= i
         
         # Calculate the PMF
         pmf_value = (lambda_power_k * exp_neg_lambda) / k_factorial

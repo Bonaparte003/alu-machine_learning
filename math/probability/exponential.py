@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import math
-
 
 """Class that represents an exponential distribution"""
 
@@ -46,7 +44,16 @@ class Exponential:
             return 0
         
         # Exponential PDF formula: f(x) = λ × e^(-λx)
-        pdf_value = self.lambtha * math.exp(-self.lambtha * x)
+        # Calculate e^(-λx) using Taylor series
+        exp_arg = -self.lambtha * x
+        exp_value = 1.0
+        term = 1.0
+        for i in range(1, 100):
+            term *= exp_arg / i
+            exp_value += term
+            if abs(term) < 1e-10:
+                break
+        pdf_value = self.lambtha * exp_value
         
         return pdf_value
     
@@ -65,6 +72,15 @@ class Exponential:
             return 0
         
         # Exponential CDF formula: F(x) = 1 - e^(-λx)
-        cdf_value = 1 - math.exp(-self.lambtha * x)
+        # Calculate e^(-λx) using Taylor series
+        exp_arg = -self.lambtha * x
+        exp_value = 1.0
+        term = 1.0
+        for i in range(1, 100):
+            term *= exp_arg / i
+            exp_value += term
+            if abs(term) < 1e-10:
+                break
+        cdf_value = 1 - exp_value
         
         return cdf_value
