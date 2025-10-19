@@ -43,10 +43,10 @@ class Poisson:
         x = -self.lambtha
         exp_neg_lambda = 1.0
         term = 1.0
-        for i in range(1, 100):  # Use enough terms for accuracy
+        for i in range(1, 200):  # Use more terms for higher precision
             term *= x / i
             exp_neg_lambda += term
-            if abs(term) < 1e-10:  # Stop when terms become very small
+            if abs(term) < 1e-15:  # Stop when terms become very small
                 break
 
         # k! - calculate factorial manually

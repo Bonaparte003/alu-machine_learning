@@ -80,10 +80,10 @@ class Normal:
         # Calculate e^exponent using Taylor series
         exp_value = 1.0
         term = 1.0
-        for i in range(1, 100):
+        for i in range(1, 200):
             term *= exponent / i
             exp_value += term
-            if abs(term) < 1e-10:
+            if abs(term) < 1e-15:
                 break
         pdf_value = coefficient * exp_value
 
@@ -116,10 +116,10 @@ class Normal:
         exp_arg = -z * z / 2
         exp_value = 1.0
         term = 1.0
-        for i in range(1, 100):
+        for i in range(1, 200):
             term *= exp_arg / i
             exp_value += term
-            if abs(term) < 1e-10:
+            if abs(term) < 1e-15:
                 break
 
         d = 0.3989423 * exp_value

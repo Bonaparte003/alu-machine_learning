@@ -48,10 +48,10 @@ class Exponential:
         exp_arg = -self.lambtha * x
         exp_value = 1.0
         term = 1.0
-        for i in range(1, 100):
+        for i in range(1, 200):
             term *= exp_arg / i
             exp_value += term
-            if abs(term) < 1e-10:
+            if abs(term) < 1e-15:
                 break
         pdf_value = self.lambtha * exp_value
 
@@ -76,10 +76,10 @@ class Exponential:
         exp_arg = -self.lambtha * x
         exp_value = 1.0
         term = 1.0
-        for i in range(1, 100):
+        for i in range(1, 200):
             term *= exp_arg / i
             exp_value += term
-            if abs(term) < 1e-10:
+            if abs(term) < 1e-15:
                 break
         cdf_value = 1 - exp_value
 
