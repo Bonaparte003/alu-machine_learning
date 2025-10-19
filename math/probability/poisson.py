@@ -39,15 +39,21 @@ class Poisson:
         # λ^k
         lambda_power_k = self.lambtha ** k
 
-        # e^(-λ) - calculate using Taylor series approximation
-        x = -self.lambtha
-        exp_neg_lambda = 1.0
-        term = 1.0
-        for i in range(1, 200):  # Use more terms for higher precision
-            term *= x / i
-            exp_neg_lambda += term
-            if abs(term) < 1e-15:  # Stop when terms become very small
-                break
+        # e^(-λ) - calculate using e^(-λ) = 1/e^λ for better precision
+        if self.lambtha == 0:
+            exp_neg_lambda = 1.0
+        else:
+            # Calculate e^λ using Taylor series
+            x = self.lambtha
+            exp_lambda = 1.0
+            term = 1.0
+            for i in range(1, 1000):  # Use many terms for high precision
+                term *= x / i
+                exp_lambda += term
+                if abs(term) < 1e-25:  # Very tight convergence
+                    break
+            # e^(-λ) = 1/e^λ
+            exp_neg_lambda = 1.0 / exp_lambda
 
         # k! - calculate factorial manually
         k_factorial = 1
