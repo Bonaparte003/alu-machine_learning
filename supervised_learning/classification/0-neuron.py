@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 import numpy as np
+"""
+Module that defines a Neuron class for binary classification.
+"""
+
 
 class Neuron:
     """Neuron performing binary classification"""
